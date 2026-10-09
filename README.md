@@ -117,7 +117,8 @@ foundation/
 |---|---|
 | `Contracts/IamService.php` | The contract: `findUser()` and `findUserByToken()`. |
 | `Services/IamRpcService.php` | Every module calls `iam` through it: in this process when `iam` runs here, over HTTP otherwise. |
-| `Auth/JwtTokens.php`, `Auth/RpcTokens.php`, `Auth/GatewayTokens.php` | The three ways to turn a token into a user id (see [Authentication](#authentication)). |
+| `Auth/JwtTokens.php`, `Auth/RpcTokens.php`, `Auth/GatewayTokens.php` | The three ways to turn a token into a user id (see [Authentication](#authentication)). `RpcTokens` keeps what iam answered as the identity's claims. |
+| `Auth/RpcPrincipals.php` | The request's user as iam answers `findUser()`, for a module that keeps no copy. |
 | `Events/IamEvent.php`, `Events/UserRegisteredPayload.php` | The names of the events iam publishes, and the typed payload of each: iam builds it, a consumer reads it with `UserRegisteredPayload::from($payload)`. The payload class also declares its versions (`version()`, `upcast()`), so a handler only ever receives the current shape. |
 | `Shadows/UserShadow.php` | The copy of iam's users, used as it is by every module that lists it in `$shadows`, and their authenticated user (`auth.principal`). |
 | `database/shadows/` | The migration that creates the copy's table in the module that keeps it. |
@@ -220,7 +221,7 @@ request ─► TokenValidator ─► Identity ─► PrincipalResolver ─► Pr
 | Interface | Config key | Shipped | To add your own |
 |---|---|---|---|
 | `TokenValidator` | `auth.token_validation.strategy`, among `strategies` | `jwt`, `rpc`, `gateway` (below) | add a line to `strategies`; a `header` key in the strategy's config makes it read that header instead of the bearer token |
-| `PrincipalResolver` | `auth.principal_resolver` | `LocalPrincipals`: the user's row in the running module's own database, through `auth.principal`: `UserShadow` in the modules that keep it, `User` in iam, which sets it in its `config/auth.php`. `ClaimsPrincipals`: the user is built from the token, no row | name your class |
+| `PrincipalResolver` | `auth.principal_resolver` | `LocalPrincipals`: the user's row in the running module's own database, through `auth.principal`: `UserShadow` in the modules that keep it, `User` in iam, which sets it in its `config/auth.php`. `ClaimsPrincipals`: the user is built from the token, no row (with `rpc`, from what iam answered). `RpcPrincipals`: the user iam returns for the id, whatever the strategy | name your class |
 | `PermissionSource` | `auth.permission_source` | `IamPermissions`: `IamService::grants()`. `ClaimsPermissions`: the `permissions` claim of the token | name your class |
 
 The three strategies, picked by `AUTH_TOKEN_VALIDATION_STRATEGY`:

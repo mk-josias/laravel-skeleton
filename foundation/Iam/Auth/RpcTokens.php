@@ -8,7 +8,7 @@ use Foundation\Common\Auth\Identity;
 use Foundation\Common\Auth\TokenValidator;
 use Foundation\Iam\Contracts\IamService;
 
-/** The token is opaque: only iam knows whose it is. */
+/** The token is opaque: only iam knows whose it is, and what iam answers travels as the identity's claims. */
 final readonly class RpcTokens implements TokenValidator
 {
     public function __construct(private IamService $iam) {}
@@ -17,6 +17,6 @@ final readonly class RpcTokens implements TokenValidator
     {
         $user = $this->iam->findUserByToken($token);
 
-        return $user === null ? null : new Identity($user['id']);
+        return $user === null ? null : new Identity($user['id'], $user);
     }
 }

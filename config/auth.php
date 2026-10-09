@@ -49,7 +49,7 @@ return [
         ],
     ],
 
-    // Where the user of a request comes from: LocalPrincipals reads the module's own database, ClaimsPrincipals only the token.
+    // Where the user of a request comes from: LocalPrincipals reads the module's own database, ClaimsPrincipals only the token, RpcPrincipals asks iam.
     'principal_resolver' => env('AUTH_PRINCIPAL_RESOLVER', LocalPrincipals::class),
 
     // The model LocalPrincipals reads users from: iam's copy, kept by the modules that list it in $shadows; iam sets its User.
