@@ -16,12 +16,12 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          repository: mbiakova/laravel-distributable-modules
+          repository: mk-josias/laravel-distributable-modules
           path: modular-monolith
 
       - uses: actions/checkout@v4
         with:
-          repository: mbiakova/laravel-microservices
+          repository: mk-josias/laravel-microservices
           path: laravel-microservices
 
       - uses: shivammathur/setup-php@v2

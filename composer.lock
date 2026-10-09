@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "31a791caf13049323d336cdaefc1ee88",
+    "content-hash": "e14f17216a18c4e2f43ae2c2721cc177",
     "packages": [
         {
             "name": "brick/math",
@@ -2596,16 +2596,16 @@
             "time": "2026-03-08T20:05:35+00:00"
         },
         {
-            "name": "mbiakova/laravel-distributable-modules",
+            "name": "mk-josias/laravel-distributable-modules",
             "version": "0.1.0",
             "dist": {
                 "type": "path",
                 "url": "../modular-monolith",
-                "reference": "f9ce842b325cfff213665e366114a10e607cc939"
+                "reference": "cce411b80d3633a9c5033358b61d972173166fdb"
             },
             "require": {
                 "laravel/framework": "^12.0 || ^13.0",
-                "mbiakova/laravel-microservices": "^0.1",
+                "mk-josias/laravel-microservices": "^0.1",
                 "php": "^8.4"
             },
             "require-dev": {
@@ -2677,12 +2677,12 @@
             }
         },
         {
-            "name": "mbiakova/laravel-microservices",
+            "name": "mk-josias/laravel-microservices",
             "version": "0.1.0",
             "dist": {
                 "type": "path",
                 "url": "../laravel-microservices",
-                "reference": "fb028c9827355fbb90ae91bdf471c1714990b532"
+                "reference": "fcaff186e8d271c89551ab7fd09ff16a44edc808"
             },
             "require": {
                 "laravel/framework": "^12.0 || ^13.0",
