@@ -12,7 +12,7 @@ use Microservices\Models\ShadowModel;
  * @property int $id
  * @property string $name
  */
-abstract class UserShadow extends ShadowModel implements Principal
+class UserShadow extends ShadowModel implements Principal
 {
     use IsPrincipal;
 

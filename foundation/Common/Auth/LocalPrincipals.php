@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Foundation\Common\Auth;
 
-use Distributable\Services\Modules\ModuleContext;
-
-/** Loads the user from the database of the running module, through the model auth.principals names for it. */
+/** Loads the user from the database of the running module, through auth.principal: iam's copy, which iam itself replaces with its User. */
 final readonly class LocalPrincipals implements PrincipalResolver
 {
-    public function __construct(private ModuleContext $context) {}
-
     public function resolve(Identity $identity): ?Principal
     {
-        $model = config('auth.principals.'.$this->context->current()?->name);
+        $model = config('auth.principal');
 
         if (! is_string($model)) {
             return null;

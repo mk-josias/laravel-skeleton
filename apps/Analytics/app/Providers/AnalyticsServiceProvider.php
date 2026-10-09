@@ -7,6 +7,7 @@ namespace Apps\Analytics\Providers;
 use Apps\Analytics\Handlers\RecordSignup;
 use Distributable\Providers\ServiceProvider;
 use Foundation\Iam\Events\IamEvent;
+use Foundation\Iam\Shadows\UserShadow;
 use Illuminate\Console\Scheduling\Schedule;
 
 final class AnalyticsServiceProvider extends ServiceProvider
@@ -14,6 +15,8 @@ final class AnalyticsServiceProvider extends ServiceProvider
     protected array $handlers = [
         IamEvent::UserRegistered->value => [RecordSignup::class],
     ];
+
+    protected array $shadows = [UserShadow::class];
 
     protected function schedule(Schedule $schedule): void
     {

@@ -6,6 +6,7 @@ use Foundation\Iam\Auth\GatewayTokens;
 use Foundation\Iam\Auth\IamPermissions;
 use Foundation\Iam\Auth\JwtTokens;
 use Foundation\Iam\Auth\RpcTokens;
+use Foundation\Iam\Shadows\UserShadow;
 
 return [
 
@@ -51,8 +52,8 @@ return [
     // Where the user of a request comes from: LocalPrincipals reads the module's own database, ClaimsPrincipals only the token.
     'principal_resolver' => env('AUTH_PRINCIPAL_RESOLVER', LocalPrincipals::class),
 
-    // module => the model LocalPrincipals reads its users from; each module adds its entry in its config/auth.php.
-    'principals' => [],
+    // The model LocalPrincipals reads users from: iam's copy, kept by the modules that list it in $shadows; iam sets its User.
+    'principal' => UserShadow::class,
 
     // Who says what a user may do: IamPermissions asks iam, ClaimsPermissions reads the claim named below in the token.
     'permission_source' => env('AUTH_PERMISSION_SOURCE', IamPermissions::class),

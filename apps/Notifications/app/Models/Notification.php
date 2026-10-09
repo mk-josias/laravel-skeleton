@@ -6,6 +6,7 @@ namespace Apps\Notifications\Models;
 
 use Apps\Notifications\Enums\NotificationType;
 use Apps\Notifications\Observers\NotificationObserver;
+use Foundation\Iam\Shadows\UserShadow;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

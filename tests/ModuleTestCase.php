@@ -45,8 +45,8 @@ abstract class ModuleTestCase extends TestCase
      */
     protected function user(int $id, string $name, array $permissions = []): array
     {
-        $copy = (string) config("auth.principals.{$this->module}");
-        $this->inModule($this->module, function () use ($copy, $id, $name): void {
+        $this->inModule($this->module, function () use ($id, $name): void {
+            $copy = (string) config('auth.principal');
             $copy::sync($id, ['name' => $name]);
         });
         $this->grants[$id] = $permissions;
