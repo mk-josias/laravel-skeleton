@@ -36,3 +36,29 @@ jobs:
       - name: Pint, PHPStan, tests
         working-directory: skeleton
         run: composer check
+
+  # The same journey with every module in one container, then with one container per module.
+  together-or-apart:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compose: [docker-compose.mono.yml, docker-compose.yml]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: skeleton
+
+      - uses: actions/checkout@v4
+        with:
+          repository: mk-josias/laravel-distributable-modules
+          path: modular-monolith
+
+      - uses: actions/checkout@v4
+        with:
+          repository: mk-josias/laravel-microservices
+          path: laravel-microservices
+
+      - name: Journey
+        working-directory: skeleton
+        run: tests/e2e/together-or-apart.sh ${{ matrix.compose }}
