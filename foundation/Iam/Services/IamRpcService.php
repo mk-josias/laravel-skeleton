@@ -38,14 +38,6 @@ final class IamRpcService extends RpcService implements IamService
         ) ?? [];
     }
 
-    /** Not cached: a changed address must be the one the next mail goes to. */
-    public function mailAddress(int $userId): ?string
-    {
-        $address = $this->call('mailAddress', ['userId' => $userId]);
-
-        return is_string($address) ? $address : null;
-    }
-
     /** iam calls it when a user changes, so the other processes read the new one. */
     public function forgetUser(int $id): void
     {

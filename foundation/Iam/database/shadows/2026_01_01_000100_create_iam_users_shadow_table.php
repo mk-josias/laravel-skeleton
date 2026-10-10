@@ -18,6 +18,7 @@ return new class extends ShadowMigration
         Schema::create($this->table(), function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->primary();
             $table->string('name');
+            $table->string('email');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('deleted_at')->nullable();

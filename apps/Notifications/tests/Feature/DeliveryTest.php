@@ -29,10 +29,9 @@ class DeliveryTest extends ModuleTestCase
         });
     }
 
-    public function test_a_welcome_is_mailed_to_the_address_iam_holds(): void
+    public function test_a_welcome_is_mailed_to_the_address_in_its_copy(): void
     {
         Mail::fake();
-        $this->mailAddresses[1] = 'ada@example.com';
         $this->user(1, 'ada');
 
         $this->receive('notifications', IamEvent::UserRegistered->value, ['id' => 1]);

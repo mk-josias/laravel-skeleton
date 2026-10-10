@@ -27,11 +27,6 @@ final readonly class IamService implements Contract
         return $user === null ? [] : array_values($user->getAllPermissions()->pluck('name')->map(strval(...))->all());
     }
 
-    public function mailAddress(int $userId): ?string
-    {
-        return User::query()->find($userId)?->email;
-    }
-
     /** @return array{id: int, name: string}|null */
     private function present(?User $user): ?array
     {

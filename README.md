@@ -164,7 +164,7 @@ A module reads another module's data in two ways, and the skeleton shows both:
 | `app/Providers/NotificationsServiceProvider.php` | `$shadows = [UserShadow::class]`: its copy of iam's users, in `iam_users`, the authenticated user of its routes. |
 | `app/Observers/NotificationObserver.php` | Once the row is committed: pushes it live, then queues one job per channel its type names. |
 | `app/Events/NotificationPushed.php` | The live push, on `private-user.{id}` (Reverb), in the shape the inbox returns; a client that was offline finds it in the inbox. |
-| `app/Enums/Channel.php`, `app/Jobs/SendMail.php` | The channels beyond the inbox. `SendMail` asks iam for the address (`IamService::mailAddress()`), so the address never sits in a copy. A new channel (SMS, push) is a case and a job. |
+| `app/Enums/Channel.php`, `app/Jobs/SendMail.php` | The channels beyond the inbox. `SendMail` reads the address in the module's copy of iam's users (`UserShadow`), so a mail leaves even when iam is down. A new channel (SMS, push) is a case and a job. |
 | `routes/api.php` | Also `POST /notifications/api/v1/broadcasting/auth`: Echo joins `private-user.{id}` with the API token; only that user may join (`Foundation\Common\Broadcasting\PrivateUserChannel`). |
 
 ```

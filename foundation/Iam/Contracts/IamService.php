@@ -14,7 +14,4 @@ interface IamService
 
     /** @return list<string> the permissions the user holds, through its roles or directly */
     public function grants(int $userId): array;
-
-    /** Asked when a mail leaves, so the address never sits in another module's copy. */
-    public function mailAddress(int $userId): ?string;
 }

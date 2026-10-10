@@ -15,9 +15,6 @@ abstract class ModuleTestCase extends TestCase
     /** @var array<int, list<string>> what iam answers to grants(), per user id */
     private array $grants = [];
 
-    /** @var array<int, string> what iam answers to mailAddress(), per user id */
-    protected array $mailAddresses = [];
-
     protected function setUp(): void
     {
         $this->setEnvironment(['RUN_MODULES' => $this->module, 'IAM_HOST' => 'http://iam.test']);
@@ -26,7 +23,6 @@ abstract class ModuleTestCase extends TestCase
 
         Http::fake([
             'iam.test/iam/rpc/grants' => fn (Request $request) => Http::response($this->grants[$request['arguments']['userId']] ?? []),
-            'iam.test/iam/rpc/mailAddress' => fn (Request $request) => Http::response((string) json_encode($this->mailAddresses[$request['arguments']['userId']] ?? null)),
         ]);
     }
 
@@ -47,7 +43,7 @@ abstract class ModuleTestCase extends TestCase
     {
         $this->inModule($this->module, function () use ($id, $name): void {
             $copy = (string) config('auth.principal');
-            $copy::sync($id, ['name' => $name]);
+            $copy::sync($id, ['name' => $name, 'email' => "{$name}@example.com"]);
         });
         $this->grants[$id] = $permissions;
 

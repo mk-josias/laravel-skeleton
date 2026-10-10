@@ -11,6 +11,7 @@ use Microservices\Models\ShadowModel;
 /**
  * @property int $id
  * @property string $name
+ * @property string $email
  */
 class UserShadow extends ShadowModel implements Principal
 {

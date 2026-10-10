@@ -35,7 +35,7 @@ final class User extends Model implements Principal, Shadowed
     protected $hidden = ['password', 'api_token'];
 
     /** @var list<string> the fields the other modules' copies carry */
-    protected array $shadowed = ['name'];
+    protected array $shadowed = ['name', 'email'];
 
     /** @return array<string, string> */
     protected function casts(): array

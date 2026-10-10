@@ -6,7 +6,6 @@ namespace Apps\Notifications\Jobs;
 
 use Apps\Notifications\Mail\NotificationMail;
 use Apps\Notifications\Models\Notification;
-use Foundation\Iam\Contracts\IamService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,12 +22,12 @@ final class SendMail implements ShouldQueue
 
     public function __construct(public readonly Notification $notification) {}
 
-    public function handle(IamService $iam): void
+    public function handle(): void
     {
-        $address = $iam->mailAddress($this->notification->recipient_user_id);
+        $recipient = $this->notification->recipient;
 
-        if ($address !== null) {
-            Mail::to($address)->send(new NotificationMail($this->notification));
+        if ($recipient !== null) {
+            Mail::to($recipient->email)->send(new NotificationMail($this->notification));
         }
     }
 }
