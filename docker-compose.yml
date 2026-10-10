@@ -1,4 +1,4 @@
-# One container per module, each from an image that holds only its module (distributable:purge).
+# One container per module, each from an image that holds only its module (modules:purge).
 # analytics reaches iam over HTTP at iam.svc; both share APP_KEY, which signs those calls.
 # Development values only: in production, set real secrets.
 

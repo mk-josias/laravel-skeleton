@@ -88,7 +88,7 @@ final class SetupSkeleton extends Command
 
     private function remove(string $module): void
     {
-        $this->call('distributable:delete-module', ['name' => $module, '--force' => true]);
+        $this->call('modules:delete', ['name' => $module, '--force' => true]);
 
         foreach (self::REMOVABLE[$module]['tests'] as $test) {
             @unlink(base_path("tests/Feature/{$test}.php"));

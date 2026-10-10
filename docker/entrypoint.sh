@@ -21,7 +21,7 @@ rm -f /tmp/supervisor/*.conf
 for module in ${WITH_CONSUMERS//,/ }; do
     cat > "/tmp/supervisor/consumer-${module}.conf" <<EOF
 [program:consumer-${module}]
-command=php /app/artisan microservices:events:consume --module=${module}
+command=php /app/artisan stream:consume --module=${module}
 autorestart=true
 stopwaitsecs=60
 stdout_logfile=/dev/stdout

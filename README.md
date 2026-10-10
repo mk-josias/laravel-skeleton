@@ -63,8 +63,8 @@ Both routes accept 6 requests a minute. A wrong password and an unknown email ge
 in its own terminal:
 
 ```bash
-php artisan microservices:events:consume --module=analytics
-php artisan microservices:events:consume --module=notifications
+php artisan stream:consume --module=analytics
+php artisan stream:consume --module=notifications
 ```
 
 `analytics` now has a signup and `notifications` a welcome message, and each keeps its own copy of
@@ -369,7 +369,7 @@ When you build an image for one module, delete the folders of the others before
 `composer dump-autoload`:
 
 ```bash
-RUN_MODULES=analytics php artisan distributable:purge --force
+RUN_MODULES=analytics php artisan modules:purge --force
 ```
 
 Starting that image with `RUN_MODULES=iam` then fails at boot, because iam's folder is gone.
@@ -386,7 +386,7 @@ docker compose up -d                              # one container per module: ia
 
 `APP_PORT`, `IAM_PORT`, `ANALYTICS_PORT` and `NOTIFICATIONS_PORT` change the published ports. In the second setup, each
 image is built with `--build-arg RUN_MODULES=<module>`, so it holds only its module: the
-Dockerfile runs `distributable:purge` before `composer dump-autoload`. A container migrates only
+Dockerfile runs `modules:purge` before `composer dump-autoload`. A container migrates only
 the database of the module it runs, so two containers never migrate the same one. Both compose files validate tokens with the `rpc` strategy: they ship no JWT
 keys. With `jwt`, give every container `AUTH_JWT_PUBLIC_KEY`, and iam `AUTH_JWT_PRIVATE_KEY`.
 
@@ -402,7 +402,7 @@ keys. With `jwt`, give every container `AUTH_JWT_PUBLIC_KEY`, and iam `AUTH_JWT_
 | `http` (Octane) | `WITH_HTTP` | `true` | as many as you need |
 | `worker` (`queue:work`) | `WITH_WORKER` | `false` | as many as you need |
 | `reverb` (WebSocket, port 8080) | `WITH_REVERB` | `false` | one per container that pushes: it pushes to its own, on localhost |
-| `publisher` (`microservices:events:publish`) | `WITH_PUBLISHER` | `false` | one per module set: two would publish the outbox out of order |
+| `publisher` (`stream:publish`) | `WITH_PUBLISHER` | `false` | one per module set: two would publish the outbox out of order |
 | `scheduler` (supercronic) | `WITH_SCHEDULER` | `false` | one per module set: two would run each task twice |
 | `consumer-<module>` | `WITH_CONSUMERS=iam,analytics,notifications` | none | one per module: two would break the order it reads in |
 
@@ -447,7 +447,7 @@ Because a module's tests name no other module's class, `Boundaries` holds for th
 |---|---|
 | `apps/{Module}/tests/` | the module alone; `phpunit.xml` lists them in the `Modules` suite |
 | `tests/Feature/ModulesTest.php` | the one flow that crosses modules, every module in one process: registration, then what analytics makes of it |
-| `tests/Feature/ArchitectureTest.php` | no module uses another module's classes (`Distributable\Testing\Boundaries`), and `distributable:doctor` passes |
+| `tests/Feature/ArchitectureTest.php` | no module uses another module's classes (`Distributable\Testing\Boundaries`), and `modules:doctor` passes |
 
 `php artisan make:test InvoiceTest --module=billing` writes a test in the module.
 
@@ -465,7 +465,7 @@ $user = $this->inModuleOf(User::class, fn () => User::query()->create([...]));
 Laravel's `make:*` commands take `--module`:
 
 ```bash
-php artisan distributable:make-module billing --database          # a new module, declared in config/modules.php and composer.json
+php artisan modules:make billing --database          # a new module, declared in config/modules.php and composer.json
 php artisan make:model Invoice -mf --module=billing          # apps/Billing/app/Models, its migration and its factory
 php artisan make:controller InvoiceController --module=billing
 ```

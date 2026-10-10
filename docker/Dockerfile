@@ -21,8 +21,8 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignor
 COPY . .
 # The packages only the purged modules required (their own composer.json) are removed; naming them keeps every other version as locked.
 RUN composer dump-autoload --no-dev \
-    && UNUSED="$(RUN_MODULES="$RUN_MODULES" php artisan distributable:unused-packages)" \
-    && RUN_MODULES="$RUN_MODULES" php artisan distributable:purge --force \
+    && UNUSED="$(RUN_MODULES="$RUN_MODULES" php artisan modules:unused-packages)" \
+    && RUN_MODULES="$RUN_MODULES" php artisan modules:purge --force \
     && if [ -n "$UNUSED" ]; then \
         composer update $UNUSED --no-dev --no-scripts --no-autoloader --ignore-platform-reqs \
         && rm -f bootstrap/cache/packages.php bootstrap/cache/services.php; \

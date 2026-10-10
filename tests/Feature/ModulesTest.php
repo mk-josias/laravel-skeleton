@@ -29,7 +29,7 @@ class ModulesTest extends TestCase
 
         $this->assertSame(0, $this->inModuleOf(Signup::class, fn (): int => Signup::query()->count()));
 
-        $this->artisan('microservices:events:consume --module=analytics')->assertSuccessful();
+        $this->artisan('stream:consume --module=analytics')->assertSuccessful();
 
         $signup = $this->inModuleOf(Signup::class, fn (): ?Signup => Signup::query()->with('user')->first());
 
@@ -40,7 +40,7 @@ class ModulesTest extends TestCase
     public function test_a_route_of_another_module_authenticates_with_a_token_issued_by_iam(): void
     {
         $token = $this->postJson('/iam/api/v1/users', ['name' => 'Ada', 'email' => 'ada@example.com', 'password' => 'correct-horse'])->json('data.token');
-        $this->artisan('microservices:events:consume --module=analytics')->assertSuccessful();
+        $this->artisan('stream:consume --module=analytics')->assertSuccessful();
 
         $this->getJson('/analytics/api/v1/signups')->assertUnauthorized();
 
@@ -61,7 +61,7 @@ class ModulesTest extends TestCase
     {
         $response = $this->postJson('/iam/api/v1/users', ['name' => 'Ada', 'email' => 'ada@example.com', 'password' => 'correct-horse']);
         $headers = ['Authorization' => 'Bearer '.$response->json('data.token')];
-        $this->artisan('microservices:events:consume --module=analytics')->assertSuccessful();
+        $this->artisan('stream:consume --module=analytics')->assertSuccessful();
 
         $this->getJson('/analytics/api/v1/signups?user_id='.$response->json('data.id'), $headers)
             ->assertOk()
